@@ -6,6 +6,7 @@ import { Label } from "@radix-ui/react-label";
 import { useState } from "react";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+
 // Function to calculate password strength
 const getPasswordStrength = (password: string) => {
   let score = 0;
@@ -28,11 +29,13 @@ const AuthRegister = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("")
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Email:", email);
     console.log("Password:", password);
+    console.log("Name:", name);
     //API call
     navigate(`/auth/verify-otp/${email}`);
   };
@@ -75,6 +78,18 @@ const AuthRegister = () => {
               placeholder="************"
               className="w-full focus:ring-0 focus:border-blue-700 transition-all"
             />
+          
+          <div>
+            <Label htmlFor="password">Non de l'utilisateur</Label>
+            <Input 
+            id="userName"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Jhon Doe"
+            className="w-full focus:ring-0 focus:border-blue-700 transition-all"/>
+
+          </div>
 
             <div className="mt-2 flex items-center space-x-1 w-full">
               {[1, 2, 3, 4, 5].map((segment, index) => (

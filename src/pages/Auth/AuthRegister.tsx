@@ -6,7 +6,7 @@ import { Label } from "@radix-ui/react-label";
 import { useState } from "react";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-
+import { registerUser } from "@/services/api";
 // Function to calculate password strength
 const getPasswordStrength = (password: string) => {
   let score = 0;
@@ -31,14 +31,27 @@ const AuthRegister = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  ////////////////fonction handleSubmit//////////////
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Name:", name);
-    //API call
-    navigate(`/auth/verify-otp/${email}`);
+    try{
+      const response = await registerUser({email, password, name})
+
+      console.log(response.data);
+      navigate(`/auth/verify-otp/${email}`);
+      
+    }catch(error: any){
+      console.error("Erreur d'inscription", error);
+      if(error.response?.data?.message){
+        alert(error.response.data.message)
+      }else{
+        alert("Une erreur est survenue.")
+      }
+    }
   };
+
+//////////////////////////////////////////////////////////
 
   const strength = getPasswordStrength(password);
 
